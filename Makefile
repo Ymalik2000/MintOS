@@ -30,3 +30,9 @@ mykernel.iso: mykernel.bin
 		echo '}' >> iso/boot/grub/grub.cfg
 		grub-mkrescue --output=$@ iso
 		rm -rf iso
+
+run: mykernel.bin
+	 qemu-system-i386 -kernel mykernel.bin
+
+clean:
+	rm -rf mykernel.bin kernel.o loader.o
