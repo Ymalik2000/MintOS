@@ -1,5 +1,4 @@
-#include <stddef.h>
-#include <stdint.h>
+#include "types.h"
 
 uint16_t* vga_buffer = (uint16_t*)0xB8000;
 const int VGA_COLS = 80;
@@ -18,7 +17,7 @@ void term_init()
 		{
 			// The VGA textmode buffer has size (VGA_COLS * VGA_ROWS).
 			// Given this, we find an index into the buffer for our character
-			const size_t index = (VGA_COLS * row) + col;
+			const int index = (VGA_COLS * row) + col;
 			// Entries in the VGA buffer take the binary form BBBBFFFFCCCCCCCC, where:
 			// - B is the background color
 			// - F is the foreground color
@@ -30,13 +29,11 @@ void term_init()
 
 void printf(char* str)
 {
-    static unsigned short* VideoMemory = (unsigned short*)0xb8000;
+    static uint16_t* VideoMemory = (unsigned short*)0xb8000;
 
     for(int i = 0; str[i] != '\0'; ++i)
         VideoMemory[i] = (VideoMemory[i] & 0xFF00) | str[i];
 }
-
-
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -47,7 +44,7 @@ extern "C" void callConstructors()
         (*i)();
 }
 
-extern "C" void kernelMain(const void* multiboot_structure, unsigned int /*multiboot_magic*/)
+extern "C" void kernelMain(const void* multiboot_structure, unsigned uint32_t /*multiboot_magic*/)
 {
     term_init();
     printf("Welcome to MintOS");
