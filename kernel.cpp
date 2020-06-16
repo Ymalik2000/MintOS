@@ -1,4 +1,5 @@
 #include "types.h"
+#include "gdt.h"
 
 uint16_t* vga_buffer = (uint16_t*)0xB8000;
 const int VGA_COLS = 80;
@@ -48,6 +49,8 @@ extern "C" void kernelMain(const void* multiboot_structure, unsigned uint32_t /*
 {
     term_init();
     printf("Welcome to MintOS");
+
+	GlobalDescriptorTable gdt;
 
     while(1);
 }
