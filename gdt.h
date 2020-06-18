@@ -1,3 +1,4 @@
+//Used to set up memory for interrupts and KB&M inputs
 #ifndef __GDT_H
 #define __GDT_H
 
